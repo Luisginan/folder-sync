@@ -28,6 +28,12 @@ public class Main {
                 ref.destination.add(s);
             }
         });
+
+        System.out.println("Source: " + ref.source);
+        ref.destination.forEach(dest ->{
+           System.out.println("Destination: " + dest);
+        });
+
         Watcher watcher = new AsFolderWatcher();
         FileOperation fileOperation = new AsFileOperation();
         watcher.startWatch(ref.source, file -> {
