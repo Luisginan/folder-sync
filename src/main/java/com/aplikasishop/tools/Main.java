@@ -14,7 +14,7 @@ public class Main {
             String source = "";
             final List<String> destination = new ArrayList<>();
         };
-;
+
         Arrays.stream(args).forEach(arg -> {
             if (arg.startsWith("--source=")) {
                 var value = arg.trim().split("=");
@@ -30,20 +30,16 @@ public class Main {
         });
 
         System.out.println("Source: " + ref.source);
-        ref.destination.forEach(dest ->{
-           System.out.println("Destination: " + dest);
-        });
+        ref.destination.forEach(dest -> System.out.println("Destination: " + dest));
 
         Watcher watcher = new AsFolderWatcher();
         FileOperation fileOperation = new AsFileOperation();
-        watcher.startWatch(ref.source, file -> {
-            ref.destination.forEach(dest -> {
-                try {
-                    fileOperation.CopyFile(file.getAbsolutePath(),dest + "/" + file.getName() );
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            });
-        });
+        watcher.startWatch(ref.source, file -> ref.destination.forEach(dest -> {
+            try {
+                fileOperation.CopyFile(file.getAbsolutePath(),dest + "/" + file.getName() );
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }));
     }
 }
