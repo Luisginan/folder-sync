@@ -35,11 +35,15 @@ public class Main {
         Watcher watcher = new AsFolderWatcher();
         FileOperation fileOperation = new AsFileOperation();
         watcher.startWatch(ref.source, file -> ref.destination.forEach(dest -> {
-            try {
-                fileOperation.CopyFile(file.getAbsolutePath(),dest + "/" + file.getName() );
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            while (true) {
+                try {
+                    fileOperation.CopyFile(file.getAbsolutePath(),dest + "/" + file.getName() );
+                    break;
+                } catch (IOException e) {
+                    System.out.println("Error: " + e.getMessage());
+                }
             }
+
         }));
     }
 }
