@@ -1,2 +1,7 @@
 # folder-sync
-Tools for sync file between folder to another folder
+Tool for sync folder to another folder.
+- Support multiple destination
+
+How to run :
+java -jar folder-sync-1.0-SNAPSHOT.jar --source="C:\x" --destination="C:\y" --destination="C:\z"
+
