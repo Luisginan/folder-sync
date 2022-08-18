@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5fd5900e-0690-4fa4-91e8-354fc4af5698" name="Changes" comment="refactoring">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/aplikasishop/tools/Param.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/aplikasishop/tools/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/aplikasishop/tools/Main.java" afterDir="false" />
-    </list>
+    <list default="true" id="5fd5900e-0690-4fa4-91e8-354fc4af5698" name="Changes" comment="refactoring" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -92,6 +88,7 @@
       <workItem from="1656224502903" duration="1893000" />
       <workItem from="1656245519383" duration="5739000" />
       <workItem from="1656989066719" duration="943000" />
+      <workItem from="1660473589552" duration="599000" />
     </task>
     <task id="LOCAL-00001" summary="init file">
       <created>1656248401455</created>
