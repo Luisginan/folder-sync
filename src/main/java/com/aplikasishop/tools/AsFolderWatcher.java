@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 
+import static java.lang.Thread.sleep;
+
 public class AsFolderWatcher implements Watcher {
     @Override
     public void startWatch(String path, FileChangeHandler fileChangeHandler) throws IOException, InterruptedException {
@@ -20,6 +22,9 @@ public class AsFolderWatcher implements Watcher {
                 System.out.println(
                         "Event kind:" + event.kind()
                                 + ". File affected: " + event.context() + ".");
+                System.out.print("Preparation data...");
+                sleep(30000);
+                System.out.println("DONE");
                 fileChangeHandler.onFileCreated(new File(path + "/" + event.context()));
             }
             key.reset();

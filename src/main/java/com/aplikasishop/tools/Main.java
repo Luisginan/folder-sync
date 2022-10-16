@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
+import static java.lang.Thread.sleep;
+
 public class Main {
     public static void main(String[] args) {
         try {
@@ -44,6 +46,7 @@ public class Main {
                     fileOperation.CopyFile(file.getAbsolutePath(), dest + "/" + file.getName());
                     break;
                 } catch (IOException e) {
+                    sleep(30000);
                     System.out.println("Error: " + e.getMessage());
                 }
             }
