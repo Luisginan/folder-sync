@@ -6,10 +6,16 @@ import com.aplikasishop.tools.interfaces.Watcher;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static java.lang.Thread.sleep;
 
 public class Main {
+
+    private static final Logger logger = Logger.getLogger(Main.class.getName());
+    public static final String INTERRUPTED = "Interrupted!";
+
     public static void main(String[] args) {
         try {
             var valueParam = getValueParam(args);
@@ -18,11 +24,10 @@ public class Main {
 
             var watcher = getWatcher();
             var fileOperation = getFileOperation();
-            watcher.startWatch(valueParam.source, file -> valueParam.destination.forEach(dest -> {
-                onFolderChange(fileOperation, file, dest);
-            }));
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+            watcher.startWatch(valueParam.source, file -> valueParam.destination.forEach(dest -> onFolderChange(fileOperation, file, dest)));
+        } catch (IOException | InterruptedException e) {
+            logger.log(Level.SEVERE, INTERRUPTED, e);
+            Thread.currentThread().interrupt();
         }
     }
 
@@ -35,24 +40,30 @@ public class Main {
     }
 
     private static void printParam(Param valueParam) {
-        System.out.println("Source: " + valueParam.source);
-        valueParam.destination.forEach(dest -> System.out.println("Destination: " + dest));
+       logger.log(Level.INFO,"Source: {0}",valueParam.source);
+        valueParam.destination.forEach(dest -> logger.log(Level.INFO,"Destination: {0}", dest));
     }
 
     private static void onFolderChange(FileOperation fileOperation, File file, String dest) {
         try {
             while (true) {
-                try {
-                    fileOperation.CopyFile(file.getAbsolutePath(), dest + "/" + file.getName());
-                    break;
-                } catch (IOException e) {
-                    sleep(30000);
-                    System.out.println("Error: " + e.getMessage());
-                }
+                if (executeCopyFile(fileOperation, file, dest)) break;
             }
-        } catch (Exception exception) {
-            System.out.println("Error: " + exception.getMessage());
+        } catch (InterruptedException exception) {
+            logger.log(Level.SEVERE, INTERRUPTED, exception);
+            Thread.currentThread().interrupt();
         }
+    }
+
+    private static boolean executeCopyFile(FileOperation fileOperation, File file, String dest) throws InterruptedException {
+        try {
+            fileOperation.CopyFile(file.getAbsolutePath(), dest + "/" + file.getName());
+            return true;
+        } catch (Exception e) {
+            sleep(30000);
+            logger.log(Level.SEVERE, INTERRUPTED, e);
+        }
+        return false;
     }
 
     private static Param getValueParam(String[] args) {
