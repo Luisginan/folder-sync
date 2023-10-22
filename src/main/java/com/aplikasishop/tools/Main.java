@@ -4,30 +4,50 @@ import com.aplikasishop.tools.interfaces.FileOperation;
 import com.aplikasishop.tools.interfaces.Watcher;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static java.lang.Thread.sleep;
 
 public class Main {
 
-    private static final Logger logger = Logger.getLogger(Main.class.getName());
-    public static final String INTERRUPTED = "Interrupted!";
 
     public static void main(String[] args) {
         try {
+            Logger.logGreen("Starting application...");
             var valueParam = getValueParam(args);
-
             printParam(valueParam);
+
+            validateParam(valueParam);
 
             var watcher = getWatcher();
             var fileOperation = getFileOperation();
             watcher.startWatch(valueParam.source, file -> valueParam.destination.forEach(dest -> onFolderChange(fileOperation, file, dest)));
-        } catch (IOException | InterruptedException e) {
-            logger.log(Level.SEVERE, INTERRUPTED, e);
+        } catch (Exception e) {
+            Logger.logRed(e);
             Thread.currentThread().interrupt();
+        }
+    }
+
+
+    private static void validateParam(Param valueParam) throws Exception {
+        if (valueParam.source.isEmpty()) {
+            throw new Exception("Source is empty");
+        }
+
+        //check if folder source is not exist
+        if (!new File(valueParam.source).exists()) {
+            throw new Exception("Source is not exist -> " + valueParam.source);
+        }
+        //check if destination is not empty
+        if (valueParam.destination.isEmpty()) {
+            throw new Exception("Destination is empty -> " + valueParam.destination);
+        }
+
+        //check if folder destination is not exist
+        for (String dest : valueParam.destination) {
+            if (!new File(dest).exists()) {
+                throw new Exception("Destination is not exist -> " + dest);
+            }
         }
     }
 
@@ -40,9 +60,11 @@ public class Main {
     }
 
     private static void printParam(Param valueParam) {
-       logger.log(Level.INFO,"Source: {0}",valueParam.source);
-        valueParam.destination.forEach(dest -> logger.log(Level.INFO,"Destination: {0}", dest));
+        Logger.logYellow("Source: " + valueParam.source);
+        valueParam.destination.forEach(dest -> Logger.logBlue("Destination: " + dest));
     }
+
+
 
     private static void onFolderChange(FileOperation fileOperation, File file, String dest) {
         try {
@@ -50,7 +72,7 @@ public class Main {
                 if (executeCopyFile(fileOperation, file, dest)) break;
             }
         } catch (InterruptedException exception) {
-            logger.log(Level.SEVERE, INTERRUPTED, exception);
+            Logger.logRed(exception);
             Thread.currentThread().interrupt();
         }
     }
@@ -61,7 +83,7 @@ public class Main {
             return true;
         } catch (Exception e) {
             sleep(30000);
-            logger.log(Level.SEVERE, INTERRUPTED, e);
+            Logger.logRed(e);
         }
         return false;
     }

@@ -15,8 +15,8 @@ public class AsFileOperation implements FileOperation {
         var file = new File(path);
         Path copied = Paths.get(destination);
         Path originalPath = file.toPath();
-        System.out.print("Copy file  " + copied + " to " + destination + " ... ");
+        Logger.log("Copy file  " + copied + " to " + destination + " ... ");
         Files.copy(originalPath, copied, StandardCopyOption.REPLACE_EXISTING);
-        System.out.println("DONE");
+        Logger.logGreen("DONE");
     }
 }
