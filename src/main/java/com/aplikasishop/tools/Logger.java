@@ -1,6 +1,6 @@
 package com.aplikasishop.tools;
 
-public class Logger {//function show verbose with red font color without Logger
+public class Logger {
 
     public static void logRed(Exception e) {
         System.out.println("\u001B[31m" + e.getMessage() + "\u001B[0m");
