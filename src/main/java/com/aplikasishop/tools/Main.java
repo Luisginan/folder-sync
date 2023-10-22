@@ -14,10 +14,8 @@ public class Main {
     public static void main(String[] args) {
         try {
             Logger.logGreen("Starting application...");
-            var valueParam = getValueParam(args);
-            printParam(valueParam);
-
-            validateParam(valueParam);
+            var valueParam = Param.getValueParam(args);
+            Logger.logGreen("Starting watcher...");
 
             var watcher = getWatcher();
             var fileOperation = getFileOperation();
@@ -29,27 +27,7 @@ public class Main {
     }
 
 
-    private static void validateParam(Param valueParam) throws Exception {
-        if (valueParam.source.isEmpty()) {
-            throw new Exception("Source is empty");
-        }
 
-        //check if folder source is not exist
-        if (!new File(valueParam.source).exists()) {
-            throw new Exception("Source is not exist -> " + valueParam.source);
-        }
-        //check if destination is not empty
-        if (valueParam.destination.isEmpty()) {
-            throw new Exception("Destination is empty -> " + valueParam.destination);
-        }
-
-        //check if folder destination is not exist
-        for (String dest : valueParam.destination) {
-            if (!new File(dest).exists()) {
-                throw new Exception("Destination is not exist -> " + dest);
-            }
-        }
-    }
 
     private static FileOperation getFileOperation() {
         return new AsFileOperation();
